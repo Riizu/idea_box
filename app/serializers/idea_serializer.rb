@@ -1,3 +1,3 @@
 class IdeaSerializer < ActiveModel::Serializer
-    attributes :title, :body, :quality
+    attributes :id, :title, :body, :quality
 end
