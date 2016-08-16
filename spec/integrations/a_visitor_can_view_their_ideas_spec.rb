@@ -6,13 +6,19 @@ RSpec.feature "A visitor can view all their ideas" do
 
         visit '/'
 
+        expect(page).to have_content "IdeaBox"
+
         within '.new-idea-form' do
+            expect(page).to have_content "Add an Idea"
+
             expect(page).to have_selector("input[type=text][name='title']")
             expect(page).to have_selector("input[type=text][name='body']")
             expect(page).to have_selector("input[type=submit][value='Save']")
         end
 
         within '.ideas' do
+            expect(page).to have_content "Most Recent Ideas"
+
             within '#idea-2' do
                 expect(page).to have_content ideas[1].title
                 expect(page).to have_content ideas[1].body
