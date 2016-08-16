@@ -31,18 +31,20 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'faraday'
+gem "active_model_serializers"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'rspec-rails'
   gem 'vcr'
-  gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem 'capybara'
   gem 'webmock'
   gem 'simplecov'
   gem 'shoulda-matchers'
   gem 'database_cleaner'
+  gem 'launchy'
 end
 
 group :development do

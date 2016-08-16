@@ -1,0 +1,26 @@
+<h2>IdeaBox</h2>
+
+<div class="ideas">
+
+    <div class="new-idea-form">
+        <h4>Add an Idea</h4>
+
+        <%= form_tag do %>
+            <%= label_tag(:title, "Title:") %>
+            <%= text_field_tag(:title) %>
+            <%= label_tag(:body, "Body:") %>
+            <%= text_field_tag(:body) %>
+            <%= submit_tag("Save") %>
+        <% end %>
+    </div>
+
+    <h4>Most Recent Ideas</h4>
+
+    <% @ideas.each do |idea| %>
+        <div id="idea-<%= idea.id %>">
+            <span><%= idea.title %></span>
+            <span><%= idea.quality %></span>
+            <span><%= idea.body %></span>
+        </div>
+    <% end %>
+</div>
