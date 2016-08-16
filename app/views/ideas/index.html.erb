@@ -1,0 +1,9 @@
+<div class="ideas">
+    <% @ideas.each do |idea| %>
+        <div id="idea-<%= idea.id %>">
+            <span><%= idea.title %></span>
+            <span><%= idea.quality %></span>
+            <span><%= idea.body %></span>
+        </div>
+    <% end %>
+</div>
