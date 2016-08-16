@@ -6,6 +6,12 @@ RSpec.feature "A visitor can view all their ideas" do
 
         visit '/'
 
+        within '.new-idea-form' do
+            expect(page).to have_selector("input[type=text][name='title']")
+            expect(page).to have_selector("input[type=text][name='body']")
+            expect(page).to have_selector("input[type=submit][value='Save']")
+        end
+
         within '.ideas' do
             within '#idea-2' do
                 expect(page).to have_content ideas[1].title
