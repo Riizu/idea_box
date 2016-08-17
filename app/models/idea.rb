@@ -6,14 +6,24 @@ class Idea < ApplicationRecord
     enum quality: [:swill, :plausible, :genius]
 
     def upvote
-        if quality_below_bounds?
+        if within_upper_bounds?
             update_attributes(quality: quality_before_type_cast + 1 )
+        end
+    end
+
+    def downvote
+        if within_lower_bounds?
+            update_attributes(quality: quality_before_type_cast - 1 )
         end
     end
 
     private
 
-    def quality_below_bounds?
-        return true if Idea.new(title: title, body: body, quality: quality_before_type_cast + 1).valid?
+    def within_upper_bounds?
+        return (quality_before_type_cast + 1) <= (Idea.qualities.length - 1)
+    end
+
+    def within_lower_bounds?
+        return (quality_before_type_cast - 1) >= 0
     end
 end

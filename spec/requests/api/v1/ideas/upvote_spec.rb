@@ -14,7 +14,7 @@ describe "Upvote endpoint" do
     end
 
     it "won't upvote an idea that is already at max (genius)'" do
-        idea = create(:idea, quality: 1)
+        idea = create(:idea, quality: 2)
 
         get "/api/v1/ideas/#{idea.id}/upvote"
 
