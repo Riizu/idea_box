@@ -25,6 +25,23 @@ $(document).ready(function(){
         });
     }
 
+    function loadIdeas() {
+        $.ajax({
+            type: "GET",
+            url: "api/v1/ideas",
+            dataType: "JSON"
+        })
+        .success(function(json){
+            json.ideas.forEach(function(idea) {
+                $('.ideas').append(
+                    generateIdeaHtml(idea)
+                );    
+            }); 
+        });
+    }
+
+    loadIdeas();
+
     $('#idea-form').submit(function() {
         var params = $(this).serialize();
         
