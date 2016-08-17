@@ -14,16 +14,4 @@
 
 <h4>Most Recent Ideas</h4>
 
-<div class="ideas">
-    <% @ideas.each do |idea| %>
-        <div id="idea-<%= idea.id %>">
-            <div class="header quality-<%= idea.quality %>">
-                <span><%= idea.quality %></span>
-                <span><%= idea.title %></span>
-            </div>
-            <div class="description">
-                <span><%= idea.body %></span>
-            </div>
-        </div>
-    <% end %>
-</div>
+<div class="ideas"></div>
