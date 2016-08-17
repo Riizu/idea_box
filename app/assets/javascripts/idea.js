@@ -1,17 +1,17 @@
 $(document).ready(function(){    
-    var generateIdeaHtml = function(response) {
-        return "<div id='idea-'" + response.idea.id + ">" +
-                    "<div class='header quality-'" + response.idea.quality + ">" + 
-                        "<span>" + response.idea.quality + " </span>" +
-                        "<span>" + response.idea.title + "</span>" +
+    function generateIdeaHtml(idea) {
+        return "<div id='idea-'" + idea.id + ">" +
+                    "<div class='header quality-'" + idea.quality + ">" + 
+                        "<span>" + idea.quality + " </span>" +
+                        "<span>" + idea.title + "</span>" +
                     "</div>" +
                     "<div>" +
-                        "<span>" + response.idea.body + "</span>" +
+                        "<span>" + idea.body + "</span>" +
                     "</div>" +
                 "</div>";
-    };
+    }
     
-    var addIdea = function(params) {
+    function addNewIdea(params) {
         $.ajax({
             type: "POST",
             url: "api/v1/ideas",
@@ -20,15 +20,15 @@ $(document).ready(function(){
         })
         .success(function(json){
             $('.ideas').prepend(
-                generateIdeaHtml(json)
+                generateIdeaHtml(json.idea)
             );
         });
-    };
+    }
 
     $('#idea-form').submit(function() {
         var params = $(this).serialize();
         
-        addIdea(params);
+        addNewIdea(params);
         $(this).closest('form').find("#title").val("");
         $(this).closest('form').find("#body").val("");
 
