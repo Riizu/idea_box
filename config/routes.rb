@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :ideas, only: [:index, :create]
+      resources :ideas, only: [:index, :create] do
+          get "upvote", to: "ideas/upvote#index"
+        end
     end
   end
 end
