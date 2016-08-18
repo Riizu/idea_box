@@ -38,4 +38,21 @@ describe "Ideas endpoint" do
         expect(saved_idea.body).to eq body
         expect(saved_idea.quality).to eq "swill"
     end
+
+    it "delete an existing idea" do
+        idea = create(:idea)
+
+        delete "/api/v1/ideas/#{idea.id}"
+
+        expect(response).to be_success
+
+        parsed_idea = JSON.parse(response.body)["idea"]
+
+        expect(Idea.all.count).to eq 0
+
+        expect(parsed_idea).to_not include("created_at")
+        expect(parsed_idea).to_not include("updated_at")
+        expect(parsed_idea["title"]).to eq idea.title
+        expect(parsed_idea["body"]).to eq idea.body
+    end
 end
