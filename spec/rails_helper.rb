@@ -29,6 +29,10 @@ require 'support/factory_girl'
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+DatabaseCleaner.strategy = :truncation
+
+Capybara.javascript_driver = :webkit
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -59,15 +63,12 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   #Database Cleaner Strategies
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
+  config.use_transactional_fixtures = false
+  config.before :each do
+    DatabaseCleaner.start
   end
-
-  config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
+  config.after :each do
+    DatabaseCleaner.clean
   end
 end
 
