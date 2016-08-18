@@ -78,10 +78,3 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-
-# VCR Setup
-VCR.configure do |config|
-  config.cassette_library_dir = "spec/vcr"
-  config.hook_into :webmock
-  config.configure_rspec_metadata!
-end
