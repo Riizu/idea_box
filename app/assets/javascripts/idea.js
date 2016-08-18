@@ -12,6 +12,7 @@ $(document).ready(function() {
                     "<div>" +
                         "<button class='thumbs-up'>Thumbs Up</button>" +
                         "<button class='thumbs-down'>Thumbs Down</button>" +
+                        "<button class='delete'>Delete</button>" +
                     "</div>" +
                     
                 "</div>";
@@ -73,6 +74,17 @@ $(document).ready(function() {
         });    
     }
 
+    function deleteIdea(id) {
+        $.ajax({
+            type: "DELETE",
+            url: "api/v1/ideas/" + id,
+            dataType: "JSON"
+        })
+        .success(function(json){
+            $('#idea-' + json.idea.id).remove();
+        });
+    }
+
     function listenForVotes() {
         $('.ideas').on('click', 'button.thumbs-up', function(e) {
             upvote(e.currentTarget.parentElement.parentElement.dataset.id);
@@ -95,8 +107,14 @@ $(document).ready(function() {
         });
     }
 
+    function listenForDeletes() {
+        $('.ideas').on('click', 'button.delete', function(e) {
+            deleteIdea(e.currentTarget.parentElement.parentElement.dataset.id);
+        });
+    }
+
     loadIdeas();
     listenForVotes();
     listenForNewIdeas();
-    
+    listenForDeletes();
 });
