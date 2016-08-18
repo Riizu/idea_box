@@ -4,10 +4,10 @@ $(document).ready(function() {
         return "<div id='idea-" + idea.id + "' data-id='" + idea.id + "'>" +
                     "<div class='header quality-" + idea.quality + "'>" + 
                         "<span class='quality'>" + idea.quality + " </span>" +
-                        "<span>" + idea.title + "</span>" +
+                        "<span class='title' contenteditable='true'>" + idea.title + "</span>" +
                     "</div>" +
                     "<div>" +
-                        "<span>" + idea.body + "</span>" +
+                        "<span class='body' contenteditable='true'>" + idea.body + "</span>" +
                     "</div>" +
                     "<div>" +
                         "<button class='thumbs-up'>Thumbs Up</button>" +
@@ -85,6 +85,28 @@ $(document).ready(function() {
         });
     }
 
+    function updateIdeaBody(id, body) {
+        $.ajax({
+            type: "PATCH",
+            url: "api/v1/ideas/" + id + "?body=" + body,
+            dataType: "JSON"
+        })
+        .success(function(json){
+            $("#idea-" + id + "div .body").text(body);
+        });
+    }
+
+    function updateIdeaTitle(id, title) {
+        $.ajax({
+            type: "PATCH",
+            url: "api/v1/ideas/" + id + "?title=" + title,
+            dataType: "JSON"
+        })
+        .success(function(json){
+            $("#idea-" + id + ".header .title").text(title);
+        });
+    }
+
     function listenForVotes() {
         $('.ideas').on('click', 'button.thumbs-up', function(e) {
             upvote(e.currentTarget.parentElement.parentElement.dataset.id);
@@ -113,8 +135,23 @@ $(document).ready(function() {
         });
     }
 
+    function listenForEdits() {
+       $(".ideas").on("keydown", function(e) {
+           if(e.which == 13 && e.target.className == "title") {
+               updateIdeaTitle(e.target.parentElement.parentElement.dataset.id ,e.target.textContent);
+               e.target.blur();
+               e.preventDefault();
+           } else if (e.which == 13 && e.target.className == "body") {
+               updateIdeaBody(e.target.parentElement.parentElement.dataset.id ,e.target.textContent);
+               e.target.blur();
+               e.preventDefault();
+           }
+       });
+   }
+
     loadIdeas();
     listenForVotes();
     listenForNewIdeas();
     listenForDeletes();
+    listenForEdits();
 });
