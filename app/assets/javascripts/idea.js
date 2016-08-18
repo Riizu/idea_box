@@ -1,13 +1,19 @@
-$(document).ready(function(){    
+$(document).ready(function() {
+    
     function generateIdeaHtml(idea) {
-        return "<div id='idea-'" + idea.id + ">" +
-                    "<div class='header quality-'" + idea.quality + ">" + 
-                        "<span>" + idea.quality + " </span>" +
+        return "<div id='idea-" + idea.id + "' data-id='" + idea.id + "'>" +
+                    "<div class='header quality-" + idea.quality + "'>" + 
+                        "<span class='quality'>" + idea.quality + " </span>" +
                         "<span>" + idea.title + "</span>" +
                     "</div>" +
                     "<div>" +
                         "<span>" + idea.body + "</span>" +
                     "</div>" +
+                    "<div>" +
+                        "<button class='thumbs-up'>Thumbs Up</button>" +
+                        "<button class='thumbs-down'>Thumbs Down</button>" +
+                    "</div>" +
+                    
                 "</div>";
     }
     
@@ -25,6 +31,11 @@ $(document).ready(function(){
         });
     }
 
+    function updateIdeaQuality(idea) {
+        $("#idea-" + idea.id + " .header").prop('class', 'header ' + idea.quality);
+        $("#idea-" + idea.id + " .header .quality").text(idea.quality + " ");
+    }
+
     function loadIdeas() {
         $.ajax({
             type: "GET",
@@ -39,16 +50,53 @@ $(document).ready(function(){
             }); 
         });
     }
+   
+    function upvote(id) {
+         $.ajax({
+            type: "GET",
+            url: "api/v1/ideas/" + id + "/upvote",
+            dataType: "JSON"
+        })
+        .success(function(json){
+            updateIdeaQuality(json.idea);
+        });    
+    }
+
+    function downvote(id) {
+         $.ajax({
+            type: "GET",
+            url: "api/v1/ideas/" + id + "/downvote",
+            dataType: "JSON"
+        })
+        .success(function(json){
+            updateIdeaQuality(json.idea);
+        });    
+    }
+
+    function listenForVotes() {
+        $('.ideas').on('click', 'button.thumbs-up', function(e) {
+            upvote(e.currentTarget.parentElement.parentElement.dataset.id);
+        });
+
+        $('.ideas').on('click', 'button.thumbs-down', function(e) {
+            downvote(e.currentTarget.parentElement.parentElement.dataset.id);
+        });
+    }
+
+    function listenForNewIdeas() {
+        $('#idea-form').submit(function() {
+            var params = $(this).serialize();
+            
+            addNewIdea(params);
+            $(this).closest('form').find("#title").val("");
+            $(this).closest('form').find("#body").val("");
+
+            return false;
+        });
+    }
 
     loadIdeas();
-
-    $('#idea-form').submit(function() {
-        var params = $(this).serialize();
-        
-        addNewIdea(params);
-        $(this).closest('form').find("#title").val("");
-        $(this).closest('form').find("#body").val("");
-
-        return false;
-    });
+    listenForVotes();
+    listenForNewIdeas();
+    
 });
