@@ -1,7 +1,7 @@
 $(document).ready(function() {
     
     function generateIdeaHtml(idea) {
-        return "<div id='idea-" + idea.id + "' data-id='" + idea.id + "'>" +
+        return "<div class='idea' id='idea-" + idea.id + "' data-id='" + idea.id + "'>" +
                     "<div class='header quality-" + idea.quality + "'>" + 
                         "<span class='quality'>" + idea.quality + " </span>" +
                         "<span class='title' contenteditable='true'>" + idea.title + "</span>" +
@@ -107,6 +107,21 @@ $(document).ready(function() {
         });
     }
 
+    function searchElements(targetVal) {
+        $('.idea').each(function() {
+            var withinTitles = $(this).add('.header .title').text().includes(targetVal);
+            var withinBodies = $(this).add('div .body').text().includes(targetVal)
+            var validSearch = withinTitles || withinBodies;
+            var empty = (targetVal === "");
+
+            if(validSearch || empty) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
+
     function listenForVotes() {
         $('.ideas').on('click', 'button.thumbs-up', function(e) {
             upvote(e.currentTarget.parentElement.parentElement.dataset.id);
@@ -147,11 +162,20 @@ $(document).ready(function() {
                e.preventDefault();
            }
        });
-   }
+    }
+
+    function listenForSearches() {
+        $('#search-field').on('input', function(e) {
+            var targetVal = $('#search-field').val();
+
+            searchElements(targetVal);
+        });
+    }
 
     loadIdeas();
     listenForVotes();
     listenForNewIdeas();
     listenForDeletes();
     listenForEdits();
+    listenForSearches();
 });
