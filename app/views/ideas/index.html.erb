@@ -1,0 +1,24 @@
+<h2>IdeaBox</h2>
+
+<div class="new-idea-form">
+    <h4>Add an Idea</h4>
+
+    <%= form_tag("/", id: "idea-form") do %>
+        <%= label_tag(:title, "Title:") %>
+        <%= text_field_tag(:title) %>
+        <%= label_tag(:body, "Body:") %>
+        <%= text_field_tag(:body) %>
+        <%= submit_tag("Save") %>
+    <% end %>
+</div>
+
+<h4>Most Recent Ideas</h4>
+
+<div>
+    <form>
+        Search
+        <input type="text" id="search-field">
+    </form>
+</div>
+
+<div class="ideas"></div>
