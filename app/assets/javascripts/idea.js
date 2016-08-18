@@ -109,9 +109,9 @@ $(document).ready(function() {
 
     function searchElements(targetVal) {
         $('.idea').each(function() {
-            var withinTitles = $(this).add('.header .title').text().includes(targetVal);
-            var withinBodies = $(this).add('div .body').text().includes(targetVal)
-            var validSearch = withinTitles || withinBodies;
+            var withinTitle = $(this).find('.header .title').text().includes(targetVal);
+            var withinBody = $(this).find('div .body').text().includes(targetVal);
+            var validSearch = withinTitle || withinBody;
             var empty = (targetVal === "");
 
             if(validSearch || empty) {
