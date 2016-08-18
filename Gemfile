@@ -46,6 +46,7 @@ group :development, :test do
   gem 'launchy'
   gem "teaspoon-jasmine"
   gem "capybara-webkit"
+  gem "pry"
 end
 
 group :development do
