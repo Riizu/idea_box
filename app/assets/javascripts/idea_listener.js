@@ -12,7 +12,7 @@ function listenForNewIdeas() {
     $('#idea-form').submit(function() {
         var params = $(this).serialize();
         
-        addNewIdea(params);
+        createIdea(params);
         $(this).closest('form').find("#title").val("");
         $(this).closest('form').find("#body").val("");
 
