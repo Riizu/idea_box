@@ -7,6 +7,12 @@ class Api::V1::IdeasController < ApiBaseController
         render json: Idea.create(idea_params)
     end
 
+    def update
+        idea = Idea.find(params[:id])
+        idea.update_attributes(idea_params)
+        render json: idea
+    end
+
     def destroy
         idea = Idea.find(params[:id])
         idea.delete

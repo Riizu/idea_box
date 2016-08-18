@@ -55,4 +55,36 @@ describe "Ideas endpoint" do
         expect(parsed_idea["title"]).to eq idea.title
         expect(parsed_idea["body"]).to eq idea.body
     end
+
+    it "edits an existing idea's title" do
+        idea = create(:idea)
+        new_title = "The Best Title"
+
+        patch "/api/v1/ideas/#{idea.id}?title=#{new_title}"
+
+        expect(response).to be_success
+
+        parsed_idea = JSON.parse(response.body)["idea"]
+
+        expect(parsed_idea).to_not include("created_at")
+        expect(parsed_idea).to_not include("updated_at")
+        expect(parsed_idea["title"]).to eq new_title
+        expect(parsed_idea["body"]).to eq idea.body
+    end
+
+    it "edits an existing idea's body" do
+        idea = create(:idea)
+        new_body = "The best body"
+
+        patch "/api/v1/ideas/#{idea.id}?body=#{new_body}"
+
+        expect(response).to be_success
+
+        parsed_idea = JSON.parse(response.body)["idea"]
+
+        expect(parsed_idea).to_not include("created_at")
+        expect(parsed_idea).to_not include("updated_at")
+        expect(parsed_idea["title"]).to eq idea.title
+        expect(parsed_idea["body"]).to eq new_body
+    end
 end
